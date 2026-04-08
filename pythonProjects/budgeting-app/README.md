@@ -18,7 +18,7 @@ Total and doughnut graph
 
 
 Deletion
-<img width="661" height="910" alt="image" src="https://github.com/user-attachments/assets/911d78f1-7a6e-4329-b532-73428a2e763a" />
+<img width="671" height="830" alt="image" src="https://github.com/user-attachments/assets/911d78f1-7a6e-4329-b532-73428a2e763a" />
 
 Month sorting (Graph does update)
 <img width="630" height="325" alt="image" src="https://github.com/user-attachments/assets/87766def-0b64-4f20-8989-9198922f6064" />
