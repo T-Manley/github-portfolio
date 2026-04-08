@@ -45,18 +45,70 @@ def add_expense():
 
 @app.route("/expenses", methods=["GET"])
 def get_expenses():
+    month = request.args.get("month")
+
     conn = sqlite3.connect("expenses.db")
     cursor = conn.cursor()
-    cursor.execute("SELECT name, amount, category, date FROM expenses")
+
+    if month:
+        cursor.execute("""
+            SELECT id, name, amount, category, date
+            FROM expenses
+            WHERE strftime('%Y-%m', date) = ?
+        """, (month,))
+    
+    else:
+        cursor.execute("SELECT id, name, amount, category, date FROM expenses")
+
     rows = cursor.fetchall()
     conn.close()
 
     expenses = [
-        {"name": row[0], "amount": row[1], "category": row[2], "date": row[3]}
+        {
+            "id": row[0],
+            "name": row[1],
+            "amount": row[2],
+            "category": row[3],
+            "date": row[4]
+        }
         for row in rows
     ]
     
     return jsonify(expenses)
+
+@app.route("/total", methods=["GET"])
+def get_total():
+    month = request.args.get("month")
+
+    conn = sqlite3.connect("expenses.db")
+    cursor = conn.cursor()
+    
+    if month:
+        cursor.execute("""
+            SELECT SUM(amount) FROM expenses
+            WHERE strftime('%Y-%m', date) = ?
+        """, (month,))
+    else:
+        cursor.execute("SELECT SUM(amount) FROM expenses")
+
+    total = cursor.fetchone()[0]
+    conn.close()
+    
+    return jsonify({"total": total if total else 0})
+
+@app.route("/delete/<int:expense_id>", methods=["DELETE"])
+def delete_expense(expense_id):
+    conn = sqlite3.connect("expenses.db")
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM expenses WHERE id = ?", (expense_id,))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"message": "Expense deleted"})
+
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

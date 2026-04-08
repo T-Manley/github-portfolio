@@ -22,33 +22,46 @@ document.getElementById("expense-form").addEventListener("submit", async functio
 
     const result = await response.json();
     alert(result.message);
-    loadExpenses(); // refresh the expense list
+
+    // refresh the expense list, total and delete
+    loadExpenses(); 
+    loadTotal();
 });
 
-async function loadExpenses() {
-    const response = await fetch("/expenses");
+async function loadExpenses(month = null) {
+    let url = "/expenses";
+
+    if (month) {
+        url += `?month=${month}`;
+    }
+    
+    const response = await fetch(url);
     const data = await response.json();
 
     const list = document.getElementById("expense-list");
-    const totalDisplay = document.getElementById("total");
-
     list.innerHTML = ""; // clear existing items
-
-    let total = 0;
-
-    data.forEach(expense => {
-        const li = document.createElement("li");
-        li.textContent = `${expense.name}: - $${expense.amount.toFixed(2)} (${expense.category} on ${expense.date})`;
-        list.appendChild(li);
-
-        total += expense.amount;
-    });
-
-    totalDisplay.textContent = total.toFixed(2);
 
     const categoryTotals = {};
 
     data.forEach(expense => {
+        const li = document.createElement("li");
+        li.textContent = `${expense.name}: - $${expense.amount.toFixed(2)} (${expense.category} on ${expense.date})`;
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.style.marginLeft = "10px";
+
+        deleteBtn.onclick = async function() {
+            await fetch(`/delete/${expense.id}`, { method: "DELETE" });
+
+            const selectedMonth = document.getElementById("month-filter").value;
+            loadExpenses(selectedMonth);
+            loadTotal(selectedMonth);
+        };
+
+        li.appendChild(deleteBtn);
+        list.appendChild(li);
+
         if (!categoryTotals[expense.category]) {
             categoryTotals[expense.category] = 0;
         }
@@ -63,6 +76,68 @@ async function loadExpenses() {
         li.textContent = `${category}: $${categoryTotals[category].toFixed(2)}`;
         breakdownList.appendChild(li);
     }
+
+    renderCategoryChart(categoryTotals);
 }
 
-loadExpenses(); // load expenses on page load
+let categoryChart = null;
+
+function renderCategoryChart(categoryTotals) {
+    const ctx = document.getElementById("category-chart").getContext("2d");
+
+    const labels = Object.keys(categoryTotals);
+    const data = Object.values(categoryTotals);
+
+    if (categoryChart) {
+        categoryChart.destroy();
+    }
+
+    categoryChart = new Chart(ctx, {
+        type: "doughnut",
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data
+            }]
+        },
+        options: {
+            cutout: "70%",
+            plugins: {
+                legend: {
+                    position: "bottom"
+                }
+            }
+        }
+    });
+}
+
+function loadTotal(month = null) {
+    let url = "/total";
+
+    if (month) {
+        url += `?month=${month}`;
+    }
+
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("total-amount").textContent = data.total.toFixed(2);
+        });
+}
+
+document.getElementById("month-filter").addEventListener("change", function() {
+    const selectedMonth = this.value;
+    loadExpenses(selectedMonth);
+    loadTotal(selectedMonth);
+});
+
+document.getElementById("clear-filter").addEventListener("click", function() {
+    document.getElementById("month-filter").value = "";
+    loadExpenses();
+    loadTotal();
+});
+
+
+// load on page load
+loadExpenses(); 
+loadTotal();

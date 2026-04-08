@@ -3,12 +3,13 @@
 <head>
     <title>Budgeting App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Hello {{ username }}!</h1>
-    <button onclick="sayHello()">Click Me</button>
+    <!--<h1>Hello {{ username }}!</h1>-->
+    <!--<button onclick="sayHello()">Click Me</button>-->
 
-
+    <div class="container">
     <h2>Add Expense</h2>
 
     <form id="expense-form">
@@ -25,13 +26,28 @@
         <button type="submit">Add Expense</button>
     </form>
 
+    <label for="month-filter">Filter by month:</label>
+    <input type="month" id="month-filter">
+    <button id="clear-filter">Show All</button>
+
+
     <h2>Expense List</h2>
     <ul id="expense-list"></ul>
+
+    <h2>Total Spent: $<span id="total-amount">0.00</span></h2>
 
     <h3>Spending by Category</h3>
     <ul id="category-breakdown"></ul>
 
+    <h3>Spending Breakdown</h3>
+    <canvas id="category-chart" width="300" height="300"></canvas>
+
+
+
+
     <!-- Note to self: keep the script file near the end of the body? I dunno first time -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    </div>
 </body>
 </html>
