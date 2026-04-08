@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Budgeting App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Hello {{ username }}!</h1>
+    <button onclick="sayHello()">Click Me</button>
+
+
+    <h2>Add Expense</h2>
+
+    <form id="expense-form">
+        <input type="text" id="name" placeholder="Expense name" required>
+        <input type="number" id="amount" placeholder="Amount" required>
+        <input type="date" id="date" required>
+
+        <select id="category">
+            <option value="food">Food</option>
+            <option value="travel">Travel</option>
+            <option value="shopping">Shopping</option>
+        </select>
+
+        <button type="submit">Add Expense</button>
+    </form>
+
+    <h2>Expense List</h2>
+    <ul id="expense-list"></ul>
+
+    <h3>Spending by Category</h3>
+    <ul id="category-breakdown"></ul>
+
+    <!-- Note to self: keep the script file near the end of the body? I dunno first time -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
