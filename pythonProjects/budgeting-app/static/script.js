@@ -97,14 +97,36 @@ function renderCategoryChart(categoryTotals) {
         data: {
             labels: labels,
             datasets: [{
-                data: data
+                data: data,
+                backgroundColor: [
+                    "#FF6384",
+                    "#36A2EB",
+                    "#FFCE56",
+                    "#4BC0C0",
+                    "#9966FF",
+                    "#FF9F40"
+                ],
+                borderWidth: 2,
+                borderColor: "#000000",
             }]
         },
         options: {
             cutout: "70%",
+            responsive: true,
+            animation: {
+                animateRotate: true,
+                animateScale: true
+            },
             plugins: {
                 legend: {
                     position: "bottom"
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.label}: $${context.parsed.toFixed(2)}`;
+                        }
+                    }
                 }
             }
         }
