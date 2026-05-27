@@ -55,5 +55,9 @@
   "C_Cpp_Runner.useLeakSanitizer": false,
   "C_Cpp_Runner.showCompilationTime": false,
   "C_Cpp_Runner.useLinkTimeOptimization": false,
-  "C_Cpp_Runner.msvcSecureNoWarnings": false
+  "C_Cpp_Runner.msvcSecureNoWarnings": false,
+  "C_Cpp.default.compilerPath": "F:/Downloads/msys64/ucrt64/bin/gcc.exe",
+  "C_Cpp.default.debuggerPath": "F:/Downloads/msys64/ucrt64/bin/gdb.exe",
+  "C_Cpp.default.cStandard": "",
+  "C_Cpp.default.cppStandard": "",
 }

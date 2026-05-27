@@ -11,7 +11,7 @@
       "cwd": "f:/Git/github-portfolio/codecrafters-shell-cpp",
       "program": "f:/Git/github-portfolio/codecrafters-shell-cpp/build/Debug/outDebug",
       "MIMode": "gdb",
-      "miDebuggerPath": "gdb",
+      "miDebuggerPath": "F:\\Downloads\\msys64\\ucrt64\\bin\\gdb.exe",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",
