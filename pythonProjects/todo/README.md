@@ -32,11 +32,3 @@ cd python-projects/todo
 Task list is saved locally in tasks.dat when save option is chosen
 
 ---
-
-### Optional improvements (for learning and/or future updates)
-- Add input validation
-- Show task numbers when listing tasks so completing/deleting is clearer
-- Add sorting or filtering by due date
-- Consider switching from `pickle` to SQLite or JSON for portability
-
----
